@@ -1,3 +1,9 @@
+import sqlite3
+
+def get_db_connection():
+    conn = sqlite3.connect("lab_app.db")
+    conn.row_factory = sqlite3.Row  # Truy xuất theo tên cột
+    return conn
 from flask import Flask, render_template, request, redirect, url_for, session, send_file, flash
 import sqlite3
 from datetime import datetime
