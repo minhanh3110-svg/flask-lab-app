@@ -90,3 +90,42 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=10000)
+    @app.route("/edit/<int:log_id>", methods=["GET", "POST"])
+def edit_log(log_id):
+    if session.get("role") != "admin":
+        return "Không có quyền truy cập", 403
+
+    conn = get_db_connection()
+
+    if request.method == "POST":
+        data = request.form
+        try:
+            fmt = "%H:%M"
+            start = datetime.strptime(data["start_time"], fmt)
+            end = datetime.strptime(data["end_time"], fmt)
+            hours = (end - start).seconds / 3600
+        except:
+            hours = 0
+
+        total_clusters = int(data["child_bag"]) * int(data["cluster_per_child"])
+        productivity = round(total_clusters / hours, 2) if hours > 0 else 0
+
+        conn.execute("""
+            UPDATE log_entries SET
+                date=?, staff=?, variety=?, status=?, action=?, start_time=?, end_time=?,
+                box=?, medium=?, mother_bag=?, cluster_per_mother=?, child_bag=?, cluster_per_child=?,
+                total_hours=?, productivity=?
+            WHERE id=?
+        """, (
+            data["date"], data["staff"], data["variety"], data["status"], data["action"],
+            data["start_time"], data["end_time"], data["box"], data["medium"],
+            data["mother_bag"], data["cluster_per_mother"], data["child_bag"], data["cluster_per_child"],
+            hours, productivity, log_id
+        ))
+        conn.commit()
+        conn.close()
+        return redirect("/logs")
+
+    log = conn.execute("SELECT * FROM log_entries WHERE id=?", (log_id,)).fetchone()
+    conn.close()
+    return render_template("edit.html", log=log)
