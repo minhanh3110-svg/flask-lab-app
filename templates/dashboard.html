@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Tổng quan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+  <h2 class="text-center mb-4">📊 Dashboard Tổng quan</h2>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card text-bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Tổng số cụm</h5>
+          <p class="card-text fs-4">{{ total_clusters }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-bg-success">
+        <div class="card-body">
+          <h5 class="card-title">Tổng số giờ</h5>
+          <p class="card-text fs-4">{{ total_hours }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-bg-warning">
+        <div class="card-body">
+          <h5 class="card-title">Năng suất TB</h5>
+          <p class="card-text fs-4">{{ avg_productivity }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5">
+    <h4>Top nhân viên theo năng suất</h4>
+    <table class="table table-bordered table-sm table-hover mt-2">
+      <thead class="table-light">
+        <tr><th>Nhân viên</th><th>Tổng cụm</th><th>Tổng giờ</th><th>Năng suất TB</th></tr>
+      </thead>
+      <tbody>
+      {% for row in top_staff %}
+        <tr>
+          <td>{{ row['staff'] }}</td>
+          <td>{{ row['total_clusters'] }}</td>
+          <td>{{ "%.2f"|format(row['total_hours']) }}</td>
+          <td>{{ "%.2f"|format(row['avg_productivity']) }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

@@ -103,3 +103,24 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=10000)
+@app.route("/dashboard")
+@require_role("admin")
+def dashboard():
+    conn = get_db_connection()
+    total_clusters = conn.execute("SELECT SUM(child_bag * cluster_per_child) FROM log_entries").fetchone()[0] or 0
+    total_hours = conn.execute("SELECT SUM(total_hours) FROM log_entries").fetchone()[0] or 0
+    avg_productivity = round(total_clusters / total_hours, 2) if total_hours > 0 else 0
+
+    top_staff = conn.execute("""
+        SELECT staff,
+               SUM(child_bag * cluster_per_child) AS total_clusters,
+               SUM(total_hours) AS total_hours,
+               ROUND(SUM(child_bag * cluster_per_child) / SUM(total_hours), 2) AS avg_productivity
+        FROM log_entries
+        GROUP BY staff
+        ORDER BY avg_productivity DESC
+        LIMIT 5
+    """).fetchall()
+    conn.close()
+
+    return render_template("dashboard.html", total_clusters=total_clusters, total_hours=total_hours, avg_productivity=avg_productivity, top_staff=top_staff)
