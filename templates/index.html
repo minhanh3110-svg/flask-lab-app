@@ -1,8 +1,63 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Trang chính</title></head>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Nhật ký cấy mô</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; padding: 10px; max-width: 600px; margin: auto; }
+    input, select { width: 100%; padding: 8px; margin: 5px 0; }
+    button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
 <body>
-    <h1>Chào mừng đến với hệ thống phòng lab!</h1>
-    <a href="/logout">Đăng xuất</a>
+  <h2>Nhập nhật ký cấy mô</h2>
+  <form method="POST">
+    <label>Ngày:</label>
+    <input type="date" name="date" required>
+
+    <label>Giống:</label>
+    <input name="variety">
+
+    <label>Tình trạng cây:</label>
+    <select name="status">
+      <option value="Sạch">Sạch</option>
+      <option value="Khuẩn">Khuẩn</option>
+    </select>
+
+    <label>Thao tác:</label>
+    <select name="action">
+      <option value="Nhân">Nhân</option>
+      <option value="Giãn">Giãn</option>
+      <option value="Rễ">Ra rễ</option>
+    </select>
+
+    <label>Giờ bắt đầu:</label>
+    <input type="time" name="start_time">
+
+    <label>Giờ kết thúc:</label>
+    <input type="time" name="end_time">
+
+    <label>Vị trí box:</label>
+    <input name="box">
+
+    <label>Tên môi trường:</label>
+    <input name="medium">
+
+    <label>Số túi mẹ:</label>
+    <input type="number" name="mother_bag" value="0">
+
+    <label>Số cụm/túi mẹ:</label>
+    <input type="number" name="cluster_per_mother" value="0">
+
+    <label>Số túi con:</label>
+    <input type="number" name="child_bag" value="0">
+
+    <label>Số cụm/túi con:</label>
+    <input type="number" name="cluster_per_child" value="0">
+
+    <button type="submit">Lưu nhật ký</button>
+  </form>
 </body>
 </html>

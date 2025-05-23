@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: flask-lab-app
+    name: flask-lab-final
     env: python
     buildCommand: ""
     startCommand: python app.py
