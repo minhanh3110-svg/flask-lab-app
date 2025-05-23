@@ -175,3 +175,86 @@ def export_excel():
 if __name__ == "__main__":
     init_db()
     app.run(debug=True, host='0.0.0.0', port=10000)
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+
+app.secret_key = "secret-key-123"  # Nên đổi sau này để bảo mật
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        conn = get_db_connection()
+        user = conn.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password)).fetchone()
+        conn.close()
+
+        if user:
+            session["username"] = user["username"]
+            session["role"] = user["role"]
+            return redirect(url_for("index"))
+        else:
+            flash("Sai tên đăng nhập hoặc mật khẩu.")
+    return render_template("login.html")
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
+<form method="POST">
+  <label>Username:</label><input name="username"><br>
+  <label>Password:</label><input type="password" name="password"><br>
+  <button>Đăng nhập</button>
+</form>
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if "username" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        data = {
+            "date": request.form["date"],
+            "staff": session["username"],
+            "variety": request.form["variety"],
+            "status": request.form["status"],
+            "action": request.form["action"],
+            "start_time": request.form["start_time"],
+            "end_time": request.form["end_time"],
+            "box": request.form["box"],
+            "medium": request.form["medium"],
+            "mother_bag": request.form["mother_bag"],
+            "cluster_per_mother": request.form["cluster_per_mother"],
+            "child_bag": request.form["child_bag"],
+            "cluster_per_child": request.form["cluster_per_child"]
+        }
+
+        # Tính số giờ và năng suất
+        try:
+            fmt = "%H:%M"
+            start = datetime.strptime(data["start_time"], fmt)
+            end = datetime.strptime(data["end_time"], fmt)
+            hours = (end - start).seconds / 3600
+        except:
+            hours = 0
+
+        total_clusters = int(data["child_bag"]) * int(data["cluster_per_child"])
+        productivity = round(total_clusters / hours, 2) if hours > 0 else 0
+
+        conn = get_db_connection()
+        conn.execute("""
+            INSERT INTO log_entries (
+                date, staff, variety, status, action, start_time, end_time, box,
+                medium, mother_bag, cluster_per_mother, child_bag, cluster_per_child,
+                total_hours, productivity
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            data["date"], data["staff"], data["variety"], data["status"], data["action"],
+            data["start_time"], data["end_time"], data["box"], data["medium"],
+            data["mother_bag"], data["cluster_per_mother"], data["child_bag"], data["cluster_per_child"],
+            hours, productivity
+        ))
+        conn.commit()
+        conn.close()
+        flash("Đã lưu nhật ký!")
+        return redirect(url_for("index"))
+
+    return render_template("index.html")
