@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Biểu đồ năng suất</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial; padding: 10px; max-width: 90%; margin: auto; }
+    canvas { max-width: 100%; }
+    h2 { text-align: center; }
+  </style>
+</head>
+<body>
+  <h2>Biểu đồ năng suất theo tuần</h2>
+  <canvas id="chartCanvas"></canvas>
+  <script>
+    const labels = {{ labels|tojson }};
+    const datasets = {{ datasets|tojson }};
+
+    const chart = new Chart(document.getElementById("chartCanvas"), {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: datasets.map((ds, idx) => ({
+          label: ds.label,
+          data: ds.data,
+          backgroundColor: `hsl(${idx * 60}, 70%, 60%)`
+        }))
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          title: { display: true, text: "Năng suất trung bình (cụm/giờ)" }
+        },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: "Cụm/giờ" } },
+          x: { title: { display: true, text: "Tuần" } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
