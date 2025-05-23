@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Chỉnh sửa nhật ký</title></head>
+<body>
+    <h2>Chỉnh sửa nhật ký</h2>
+    <form method="post">
+        <label>Ngày:</label>
+        <input type="date" name="date" value="{{ entry.date }}"><br>
+        <label>Nhân viên:</label>
+        <input type="text" name="staff" value="{{ entry.staff }}"><br>
+        <input type="submit" value="Lưu thay đổi">
+    </form>
+</body>
+</html>
