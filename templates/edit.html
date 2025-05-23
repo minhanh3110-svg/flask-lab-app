@@ -1,14 +1,66 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Chỉnh sửa nhật ký</title></head>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chỉnh sửa nhật ký</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; padding: 10px; max-width: 600px; margin: auto; }
+    input, select { width: 100%; padding: 8px; margin: 5px 0; }
+    button { padding: 10px 20px; background: #28a745; color: white; border: none; cursor: pointer; }
+    button:hover { background: #218838; }
+  </style>
+</head>
 <body>
-    <h2>Chỉnh sửa nhật ký</h2>
-    <form method="post">
-        <label>Ngày:</label>
-        <input type="date" name="date" value="{{ entry.date }}"><br>
-        <label>Nhân viên:</label>
-        <input type="text" name="staff" value="{{ entry.staff }}"><br>
-        <input type="submit" value="Lưu thay đổi">
-    </form>
+  <h2>Chỉnh sửa nhật ký</h2>
+  <form method="POST">
+    <label>Ngày:</label>
+    <input type="date" name="date" value="{{ log['date'] }}" required>
+
+    <label>Nhân viên:</label>
+    <input name="staff" value="{{ log['staff'] }}">
+
+    <label>Giống:</label>
+    <input name="variety" value="{{ log['variety'] }}">
+
+    <label>Tình trạng cây:</label>
+    <select name="status">
+      <option value="Sạch" {% if log['status'] == 'Sạch' %}selected{% endif %}>Sạch</option>
+      <option value="Khuẩn" {% if log['status'] == 'Khuẩn' %}selected{% endif %}>Khuẩn</option>
+    </select>
+
+    <label>Thao tác:</label>
+    <select name="action">
+      <option value="Nhân" {% if log['action'] == 'Nhân' %}selected{% endif %}>Nhân</option>
+      <option value="Giãn" {% if log['action'] == 'Giãn' %}selected{% endif %}>Giãn</option>
+      <option value="Rễ" {% if log['action'] == 'Rễ' %}selected{% endif %}>Ra rễ</option>
+    </select>
+
+    <label>Giờ bắt đầu:</label>
+    <input type="time" name="start_time" value="{{ log['start_time'] }}">
+
+    <label>Giờ kết thúc:</label>
+    <input type="time" name="end_time" value="{{ log['end_time'] }}">
+
+    <label>Vị trí box:</label>
+    <input name="box" value="{{ log['box'] }}">
+
+    <label>Tên môi trường:</label>
+    <input name="medium" value="{{ log['medium'] }}">
+
+    <label>Số túi mẹ:</label>
+    <input type="number" name="mother_bag" value="{{ log['mother_bag'] }}">
+
+    <label>Số cụm/túi mẹ:</label>
+    <input type="number" name="cluster_per_mother" value="{{ log['cluster_per_mother'] }}">
+
+    <label>Số túi con:</label>
+    <input type="number" name="child_bag" value="{{ log['child_bag'] }}">
+
+    <label>Số cụm/túi con:</label>
+    <input type="number" name="cluster_per_child" value="{{ log['cluster_per_child'] }}">
+
+    <button type="submit">Cập nhật</button>
+  </form>
 </body>
 </html>
