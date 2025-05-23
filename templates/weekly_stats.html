@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Thống kê theo tuần</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; padding: 10px; max-width: 95%; margin: auto; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    h2 { text-align: center; }
+  </style>
+</head>
+<body>
+  <h2>Thống kê theo tuần</h2>
+  <table>
+    <tr>
+      <th>Tuần</th>
+      <th>Nhân viên</th>
+      <th>Tổng cụm</th>
+      <th>Tổng giờ</th>
+      <th>Năng suất TB (cụm/giờ)</th>
+    </tr>
+    {% for row in stats %}
+    <tr>
+      <td>Tuần {{ row['week'] }}</td>
+      <td>{{ row['staff'] }}</td>
+      <td>{{ row['total_clusters'] }}</td>
+      <td>{{ "%.2f"|format(row['total_hours']) }}</td>
+      <td>{{ "%.2f"|format(row['avg_productivity']) }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
