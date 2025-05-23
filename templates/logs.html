@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Nhật ký đã nhập</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; padding: 10px; max-width: 95%; margin: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
+    th { background: #f2f2f2; }
+    form { margin-bottom: 15px; }
+    input, button { padding: 6px; margin: 2px; }
+  </style>
+</head>
+<body>
+  <h2>Danh sách nhật ký</h2>
+  <form method="get">
+    Từ: <input type="date" name="from_date" value="{{ from_date }}">
+    Đến: <input type="date" name="to_date" value="{{ to_date }}">
+    <button type="submit">Lọc</button>
+    {% if from_date and to_date %}
+      <a href="/export_excel?from_date={{ from_date }}&to_date={{ to_date }}">
+        <button type="button">Xuất Excel</button>
+      </a>
+    {% endif %}
+  </form>
+
+  <table>
+    <tr>
+      <th>Ngày</th><th>Nhân viên</th><th>Giống</th><th>Thao tác</th>
+      <th>Bắt đầu</th><th>Kết thúc</th><th>Giờ</th><th>Số cụm</th><th>Năng suất</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+      <td>{{ log['date'] }}</td>
+      <td>{{ log['staff'] }}</td>
+      <td>{{ log['variety'] }}</td>
+      <td>{{ log['action'] }}</td>
+      <td>{{ log['start_time'] }}</td>
+      <td>{{ log['end_time'] }}</td>
+      <td>{{ log['total_hours'] }}</td>
+      <td>{{ log['child_bag']|int * log['cluster_per_child']|int }}</td>
+      <td>{{ log['productivity'] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
