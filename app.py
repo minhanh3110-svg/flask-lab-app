@@ -8,6 +8,19 @@ def get_db_connection():
     return conn
 
 app = Flask(__name__)
+
+from functools import wraps
+
+def require_role(*roles):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if "role" not in session or session["role"] not in roles:
+                return "Không có quyền truy cập", 403
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
 app.secret_key = "secret-key-123"
 
 @app.before_request
