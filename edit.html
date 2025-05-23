@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa nhật ký</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h3>Sửa nhật ký cấy mô</h3>
+    <form action="" method="POST" class="row g-3">
+        <div class="col-md-3"><label class="form-label">Ngày</label><input type="date" class="form-control" name="date" value="{{ log[1] }}"></div>
+        <div class="col-md-3"><label class="form-label">Mã NV</label><input type="text" class="form-control" name="employee_id" value="{{ log[2] }}"></div>
+        <div class="col-md-3"><label class="form-label">Giống</label><input type="text" class="form-control" name="species" value="{{ log[3] }}"></div>
+        <div class="col-md-3"><label class="form-label">Tình trạng</label><input type="text" class="form-control" name="status" value="{{ log[4] }}"></div>
+        <div class="col-md-3"><label class="form-label">Thao tác</label><input type="text" class="form-control" name="action" value="{{ log[5] }}"></div>
+        <div class="col-md-3"><label class="form-label">Bắt đầu</label><input type="time" class="form-control" name="start_time" value="{{ log[6] }}"></div>
+        <div class="col-md-3"><label class="form-label">Kết thúc</label><input type="time" class="form-control" name="end_time" value="{{ log[7] }}"></div>
+        <div class="col-md-3"><label class="form-label">Box</label><input type="number" class="form-control" name="box" value="{{ log[9] }}"></div>
+        <div class="col-md-3"><label class="form-label">Môi trường</label><input type="text" class="form-control" name="media" value="{{ log[10] }}"></div>
+        <div class="col-md-3"><label class="form-label">Túi mẹ</label><input type="number" class="form-control" name="bags_mother" value="{{ log[11] }}"></div>
+        <div class="col-md-3"><label class="form-label">Cụm/túi mẹ</label><input type="number" class="form-control" name="clusters_mother" value="{{ log[12] }}"></div>
+        <div class="col-md-3"><label class="form-label">Túi con</label><input type="number" class="form-control" name="bags_child" value="{{ log[13] }}"></div>
+        <div class="col-md-3"><label class="form-label">Cụm/túi con</label><input type="number" class="form-control" name="clusters_child" value="{{ log[14] }}"></div>
+        <div class="col-12"><button class="btn btn-primary">Lưu thay đổi</button> <a href="/" class="btn btn-secondary">Huỷ</a></div>
+    </form>
+</div>
+</body>
+</html>

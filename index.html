@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý phòng cấy mô</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Nhật ký cấy mô</h2>
+      {% if session['username'] %}
+        <div>👋 Xin chào: <strong>{{ session['username'] }}</strong> ({{ session['role'] }}) | <a href="/logout" class="btn btn-sm btn-outline-secondary">Đăng xuất</a></div>
+      {% endif %}
+    </div>
+    
+    <form action="/add_log" method="POST" class="row g-3">
+        <div class="col-md-3"><label class="form-label">Ngày</label><input type="date" class="form-control" name="date" required></div>
+        <div class="col-md-3"><label class="form-label">Mã nhân viên</label><input type="text" class="form-control" name="employee_id" required></div>
+        <div class="col-md-3"><label class="form-label">Giống</label><input type="text" class="form-control" name="species"></div>
+        <div class="col-md-3"><label class="form-label">Tình trạng cây</label>
+            <select class="form-select" name="status">
+                <option value="sach">Sạch</option>
+                <option value="khuan">Nhiễm khuẩn</option>
+            </select>
+        </div>
+        <div class="col-md-3"><label class="form-label">Thao tác cấy</label>
+            <select class="form-select" name="action">
+                <option value="nhan">Nhân</option>
+                <option value="gian">Giãn</option>
+                <option value="re">Ra rễ</option>
+            </select>
+        </div>
+        <div class="col-md-3"><label class="form-label">Giờ bắt đầu</label><input type="time" class="form-control" name="start_time"></div>
+        <div class="col-md-3"><label class="form-label">Giờ kết thúc</label><input type="time" class="form-control" name="end_time"></div>
+        <div class="col-md-3"><label class="form-label">Box</label><input type="number" class="form-control" name="box"></div>
+        <div class="col-md-3"><label class="form-label">Môi trường</label><input type="text" class="form-control" name="media"></div>
+        <div class="col-md-3"><label class="form-label">Túi mẹ</label><input type="number" class="form-control" name="bags_mother"></div>
+        <div class="col-md-3"><label class="form-label">Cụm/túi mẹ</label><input type="number" class="form-control" name="clusters_mother"></div>
+        <div class="col-md-3"><label class="form-label">Túi con</label><input type="number" class="form-control" name="bags_child"></div>
+        <div class="col-md-3"><label class="form-label">Cụm/túi con</label><input type="number" class="form-control" name="clusters_child"></div>
+        <div class="col-12"><button type="submit" class="btn btn-primary">Lưu nhật ký</button></div>
+    </form>
+
+    <hr>
+    <h4 class="mt-4">Danh sách nhật ký</h4>
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>Ngày</th><th>Mã NV</th><th>Giống</th><th>Tình trạng</th><th>Thao tác</th>
+            <th>Giờ bắt đầu</th><th>Giờ kết thúc</th><th>Số giờ</th><th>Box</th><th>Môi trường</th>
+            <th>Túi mẹ</th><th>Cụm/túi mẹ</th><th>Túi con</th><th>Cụm/túi con</th><th>Năng suất (cụm/giờ)</th><th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr>
+                <td>{{ log[1] }}</td><td>{{ log[2] }}</td><td>{{ log[3] }}</td><td>{{ log[4] }}</td><td>{{ log[5] }}</td>
+                <td>{{ log[6] }}</td><td>{{ log[7] }}</td><td>{{ log[8] }}</td><td>{{ log[9] }}</td><td>{{ log[10] }}</td>
+                <td>{{ log[11] }}</td><td>{{ log[12] }}</td><td>{{ log[13] }}</td><td>{{ log[14] }}</td>
+                <td>{{ log[15]|round(2) }}</td>
+                
+    <td>
+      {% if session['role'] == 'admin' %}
+        <a href="/edit_log/{{ log[0] }}" class="btn btn-warning btn-sm">✏️</a>
+        <a href="/delete_log/{{ log[0] }}" class="btn btn-danger btn-sm">🗑</a>
+      {% else %}
+        <span class="text-muted">Không có quyền</span>
+      {% endif %}
+    </td>
+    
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
